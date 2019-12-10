@@ -1,0 +1,36 @@
+{% extends "socialfeedapp/base.html" %}
+{% block content %}
+    <div class="container">
+    <h1>Social feed</h1>
+        <form action="{% url 'socialfeedapp:index' %}" method="POST">
+            {% csrf_token  %}
+            <label for="group">Group</label>
+            <select name="group" id="group">
+                {% for group in user_groups %}
+                    <option value="{{ group.pk }}">{{ group.name }}</option>
+                {% endfor %}
+            </select><br>
+            <label for="title">Title</label>
+            <input class="form-control" type="text" name="title" id="title"><br>
+            <label for="text">Text</label>
+            <textarea class="form-control" type="textarea" name="text" id="text"></textarea><br>
+            <input class="btn btn-primary" type="submit" value="Post it!">
+        </form>
+    <hr>
+    <ul>
+        {% for post in posts  %}
+           
+           <div class="media">
+                <img class="mr-3 rounded-circle" height="50px" src="{{ post.user.profile.image.url }}" alt="{{ user }}">
+                <div class="media-body">
+                    <h2 class="mt-0">{{ post.title }}</h2>
+                    <p>{{ post.description }}</p>
+                    <p style="font-size:9px;">Posted in {{ post.group }} by {{ post.user }} and created: {{ post.created }}</p>
+                </div>
+            </div>
+            <hr>
+        {% endfor  %}
+
+    </ul>
+    </div>
+    {% endblock content %}

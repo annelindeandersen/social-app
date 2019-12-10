@@ -1,0 +1,32 @@
+{% extends "socialfeedapp/base.html" %}
+{% block content %}
+    <div class="container">
+    <h1>Groups</h1>
+    <hr>
+    <h2>Groups you are a member of:</h2>
+    {% for group in user_groups  %}
+        {% if not group.pk == 1 %}
+            <p>
+                <a href="{% url 'socialfeedapp:leave_group' pk=group.pk %}">Leave Group</a>
+                - {{ group.name }}
+            </p>
+        {% endif  %}
+    {% endfor %}
+    <hr>
+    <h2>Groups you are not a member of:</h2>
+    {% for group in not_user_groups %}
+        <p><a href="{% url 'socialfeedapp:join_group' pk=group.pk %}">Join Group</a> - {{ group.name }}</p>
+    {% endfor %}
+    <hr>
+    <form action="{% url 'socialfeedapp:groups' %}" method="POST">
+        {% csrf_token %}
+        <h3>Create new group</h3>
+        <label for="name">Name</label>
+        <input class="form-control" type="text" id="name" name="name">
+        <label for="description">Description</label>
+        <input class="form-control" type="textarea" id="description" name="description"><br>
+        <input class="btn btn-primary" type="submit" value="OK">
+    </form>
+    </div>
+
+    {% endblock content %}
